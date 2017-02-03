@@ -1,0 +1,54 @@
+for FILENAME in /home/ubuntu/DevOps/*;
+do
+mv $FILENAME $FILENAME-`date +"%d-%B-%Y_%H-%M"`;
+done
+
+if [ $Rename = 'Production' ] ; then
+ssh -i /var/lib/jenkins/.ssh/slabprod.pem ubuntu@172.30.1.167
+sudo su -
+changename
+
+ssh -i /var/lib/jenkins/.ssh/slabprod.pem ubuntu@172.30.1.166
+sudo su -
+changename
+
+ssh -i /var/lib/jenkins/.ssh/slabprod.pem ubuntu@172.30.1.168
+sudo su -
+changename
+fi
+
+if [ $Rename = 'Preview' ] ; then
+ssh -i /var/lib/jenkins/.ssh/slabpreview.pem ubuntu@172.30.1.30
+sudo su -
+changename
+
+ssh -i /var/lib/jenkins/.ssh/slabpreview.pem ubuntu@172.30.1.32
+sudo su -
+changename
+
+ssh -i /var/lib/jenkins/.ssh/slabpreview.pem ubuntu@172.30.1.31
+sudo su -
+changename
+fi
+
+if [ $Rename = 'Development' ] ; then
+ssh -i /var/lib/jenkins/.ssh/Broker1.pem ubuntu@172.30.1.242
+changename
+
+ssh -i /var/lib/jenkins/.ssh/Broker1.pem ubuntu@172.30.1.244
+changename
+
+ssh -i /var/lib/jenkins/.ssh/Broker1.pem ubuntu@172.30.1.245
+changename
+fi
+
+
+
+
+
+
+scp -r -i /var/lib/jenkins/.ssh/Broker1.pem $WORKSPACE/* ubuntu@172.30.1.242:/home/ubuntu/DevOps/dev-`date +"%d-%B-%Y_%H-%M"`
+
+
+# scp -P 1251 -i /home/ubuntu/jenkins.pem ubuntu@172.30.1.158:/var/lib/jenkins/workspace/predeploy/Broker1.sh /home/ubuntu/DevOps/
+
